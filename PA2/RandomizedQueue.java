@@ -20,39 +20,40 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return N;
     }
 
-    private void resize( int capacity )
+    private void resize(int capacity)
     {
         assert capacity >= N;
-        Item[] new_s = (Item[]) new Object[capacity];
+        Item[] newS = (Item[]) new Object[capacity];
         for (int i = 0; i < N; i++)
         {
-            new_s[i] = s[i];
+            newS[i] = s[i];
         }
-        s = new_s;
+        s = newS;
     }
 
     public void enqueue(Item item)     // add the item
     {
-        if (N == s.length)  resize( 2*s.length );
+        if (item == null) throw new NullPointerException();
+        if (N == s.length)  resize(2*s.length);
         s[N++] = item;
     }
 
     public Item dequeue()              // delete and return a random item
     {
-        if (isEmpty()) throw new NoSuchElementException ("Queue underflow");
+        if (isEmpty()) throw new NoSuchElementException("Queue underflow");
         int rand = StdRandom.uniform(N);
         //StdOut.println("length of array:" + s.length);
         Item item = s[rand];
         s[rand] = s[--N];
         s[N] = null;
         //for (int i = 0; i < N; i++ ) { StdOut.print(s[i]);}
-        if (N < s.length/4) resize( s.length/2 );
+        if (N < s.length/4) resize(s.length/2);
         return item;
     }
 
     public Item sample()               // return (but do not delete) a random item
     {
-        if (isEmpty()) throw new NoSuchElementException ("Queue underflow");
+        if (isEmpty()) throw new NoSuchElementException("Queue underflow");
         int rand = StdRandom.uniform(N);
         return s[rand];
     }
@@ -64,19 +65,19 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     {
         private int current = 0;
         private int[] randomindex = new int[N];
-        public RandomizedQueueIterator(){
-            for( int i = 0; i < N; i++)
+        public RandomizedQueueIterator()
+        {
+            for (int i = 0; i < N; i++)
             {
                 randomindex[i] = i;
             }
             StdRandom.shuffle(randomindex);
         }
         public boolean hasNext() {  return current < N;  }
-        public void remove()     {  throw new NoSuchElementException();  }
+        public void remove()     {  throw new UnsupportedOperationException("Cannot Remove");  }
         public Item next()
         {
             if (!hasNext()) throw new NoSuchElementException();
-            StdOut.println(randomindex[current]);
             Item item = s[randomindex[current++]];
             return item;
         }
