@@ -15,7 +15,6 @@ public class Deque<Item> implements Iterable<Item> {
         first = null;
         last  = null;
         N     = 0;
-        assert check();
     }
     public boolean isEmpty()           // is the deque empty?
     {
@@ -37,7 +36,6 @@ public class Deque<Item> implements Iterable<Item> {
         if(isEmpty()) last = first;
         else          oldfirst.prev = first;
         N++;
-        assert check();
     }
     public void addLast(Item item)     // insert the item at the end
     {
@@ -50,7 +48,6 @@ public class Deque<Item> implements Iterable<Item> {
         if(isEmpty()) first = last;
         else          oldlast.next = last;
         N++;
-        assert check();
     }
     public Item removeFirst()          // delete and return the item at the front
     {
@@ -73,38 +70,7 @@ public class Deque<Item> implements Iterable<Item> {
         //assert check();
         return item;
     }
-    // check internal invariants
-    private boolean check() {
-        if (N == 0) {
-            if (first != null) return false;
-            if (last  != null) return false;
-        }
-        else if (N == 1) {
-            if (first == null || last == null) return false;
-            if (first != last)                 return false;
-            if (first.next != null)            return false;
-        }
-        else {
-            if (first == last)      return false;
-            if (first.next == null) return false;
-            if (last.next  != null) return false;
 
-            // check internal consistency of instance variable N
-            int numberOfNodes = 0;
-            for (Node x = first; x != null; x = x.next) {
-               numberOfNodes++;
-            }
-            if (numberOfNodes != N) return false;
-
-            // check internal consistency of instance variable last
-            Node lastNode = first;
-            while (lastNode.next != null) {
-               lastNode = lastNode.next;
-            }
-            if (last != lastNode) return false;
-        }
-        return true;
-    }
     public Iterator<Item> iterator()   // return an iterator over items in order from front to end
     {   return new DequeIterator();  }
 

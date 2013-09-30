@@ -17,7 +17,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public int size()                  // return the number of items on the queue
     {
-        return s.length;
+        return N;
     }
 
     private void resize( int capacity )
@@ -52,6 +52,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public Item sample()               // return (but do not delete) a random item
     {
+        if (isEmpty()) throw new NoSuchElementException ("Queue underflow");
         int rand = StdRandom.uniform(N);
         return s[rand];
     }
@@ -62,12 +63,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private class RandomizedQueueIterator implements Iterator<Item>
     {
         private int current = 0;
+        private int[] randomindex = new int[N];
+        public RandomizedQueueIterator(){
+            for( int i = 0; i < N; i++)
+            {
+                randomindex[i] = i;
+            }
+            StdRandom.shuffle(randomindex);
+        }
         public boolean hasNext() {  return current < N;  }
         public void remove()     {  throw new NoSuchElementException();  }
         public Item next()
         {
             if (!hasNext()) throw new NoSuchElementException();
-            Item item = s[current++];
+            StdOut.println(randomindex[current]);
+            Item item = s[randomindex[current++]];
             return item;
         }
     }

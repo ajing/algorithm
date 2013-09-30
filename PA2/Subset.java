@@ -15,5 +15,8 @@ public class Subset
             StdOut.println(w);
             k--;
         }
+        for(String i :StringQueue){
+            StdOut.println(i);
+        }
     }
 }
