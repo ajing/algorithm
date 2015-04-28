@@ -2,7 +2,7 @@
 
 
 public class Brute {
-   public static void main(String[] args){
+   public static void main(String[] args) {
 	   In in = new In(args[0]); // args[0] = name of file
 	   int N = in.readInt();    // read an integer in the file
 	   Point[] points = new Point[N];
@@ -12,6 +12,7 @@ public class Brute {
            points[i] = new Point(x, y);
        }
        
+       Selection.sort(points);
        for (int i1 = 0; i1 < N - 3; i1++) {
     	   for (int i2 = i1 + 1; i2 < N - 2; i2++) {
     		   for (int i3 = i2 + 1; i3 < N - 1; i3++) {

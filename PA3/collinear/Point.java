@@ -15,7 +15,7 @@ import java.util.Comparator;
 public class Point implements Comparable<Point> {
 
     // compare points by slope
-    public final Comparator<Point> SLOPE_ORDER = new compBySlope(this);       // YOUR DEFINITION HERE
+    public final Comparator<Point> SLOPE_ORDER = new CompBySlope(this);       // YOUR DEFINITION HERE
 
     private final int x;                              // x coordinate
     private final int y;                              // y coordinate
@@ -27,18 +27,21 @@ public class Point implements Comparable<Point> {
         this.y = y;
     }
 
-    private class compBySlope implements Comparator<Point>
+    private class CompBySlope implements Comparator<Point>
     {
-    	private Point point_zero;
+    	private Point pointZero;
     	
-    	public compBySlope(Point a) {
-    		this.point_zero = a;
+    	public CompBySlope(Point a) {
+    		this.pointZero = a;
     	}
     	public int compare(Point a, Point b)
-    	{ 
-    		double slope_delta = a.slopeTo(this.point_zero) - b.slopeTo(this.point_zero);
-    		if (slope_delta == 0)    return 0;
-    		else if (slope_delta > 0) return 1;
+    	{
+            if (a == null || b == null) {
+                throw new java.lang.NullPointerException();
+            }
+    		double slopeDelta = a.slopeTo(this.pointZero) - b.slopeTo(this.pointZero);
+    		if (slopeDelta == 0)    return 0;
+    		else if (slopeDelta > 0) return 1;
     		else return -1;
     	}
     }
@@ -58,17 +61,34 @@ public class Point implements Comparable<Point> {
     // slope between this point and that point
     public double slopeTo(Point that) {
         /* YOUR CODE HERE */
-    	return (float)(this.y - that.y) / (this.x - that.x);
+        if (that == null) {
+            throw new java.lang.NullPointerException();
+        }
+        if (this.x == that.x && this.y == that.y) {
+        	return Double.NEGATIVE_INFINITY;
+        } else if (this.x == that.x) {
+        	return Double.POSITIVE_INFINITY;
+        } else if (this.y == that.y) {
+        	return +0.0;
+        }
+        
+    	return (double) (this.y - that.y) / (this.x - that.x);
     }
 
     // is this point lexicographically smaller than that one?
     // comparing y-coordinates and breaking ties by x-coordinates
     public int compareTo(Point that) {
         /* YOUR CODE HERE */
+        if (that == null) {
+            throw new  java.lang.NullPointerException();
+        }
+    	
     	if (this.y > that.y) {
     		return 1;
     	} else if (this.y == that.y && this.x > that.x) {
     		return 1;
+    	} else if (this.y == that.y && this.x == that.x) {
+    		return 0;
     	} else {
     		return -1;
     	}
